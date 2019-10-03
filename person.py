@@ -7,7 +7,7 @@ from virus import Virus
 class Person(object):
     ''' Person objects will populate the simulation. '''
 
-    def __init__(self, _id, is_vaccinated, infection=None):
+    def __init__(self, _id, is_vaccinated, infection):
         ''' We start out with is_alive = True, because we don't make vampires or zombies.
         All other values will be set by the simulation when it makes each Person object.
         If person is chosen to be infected when the population is created, the simulation
@@ -19,6 +19,7 @@ class Person(object):
         self.is_vaccinated = is_vaccinated  # boolean
         self.infection = infection  # Virus object or None
 
+
     def did_survive_infection(self):
         ''' Generate a random number and compare to virus's mortality_rate.
         If random number is smaller, person dies from the disease.
@@ -26,18 +27,19 @@ class Person(object):
         Return a boolean value indicating whether they survived the infection.
         '''
         random_number = random.uniform(0, 1)
-        print("Randome number:", random_number)
+        print("Randome number:", self.infection)
         if(self.infection is not None):
             if(random_number < self.infection.mortality_rate):
+                self.is_alive = False
+                self.infection = None
                 return False
             else:
-                print(random.uniform(0,1))
+                print("You get to live forever!", self._id)
                 self.is_vaccinated = True
                 self.infection = None
                 return True
         # Only called if infection attribute is not None.
         # TODO:  Finish this method. Should return a Boolean
-        pass
 
 
 ''' These are simple tests to ensure that you are instantiating your Person class correctly. '''
