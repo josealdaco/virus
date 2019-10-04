@@ -1,24 +1,18 @@
+from virus import Virus
 import random
 import unittest
 random.seed(42)
-from virus import Virus
 
 
 class Person(object):
     ''' Person objects will populate the simulation. '''
 
     def __init__(self, _id, is_vaccinated, infection):
-        ''' We start out with is_alive = True, because we don't make vampires or zombies.
-        All other values will be set by the simulation when it makes each Person object.
-        If person is chosen to be infected when the population is created, the simulation
-        should instantiate a Virus object and set it as the value
-        self.infection. Otherwise, self.infection should be set to None.
-        '''
+
         self._id = _id  # int
         self.is_alive = True  # boolean
         self.is_vaccinated = is_vaccinated  # boolean
         self.infection = infection  # Virus object or None
-
 
     def did_survive_infection(self):
         ''' Generate a random number and compare to virus's mortality_rate.
@@ -26,15 +20,18 @@ class Person(object):
         If Person survives, they become vaccinated and they have no infection.
         Return a boolean value indicating whether they survived the infection.
         '''
-        random_number = random.uniform(0, 1)
-        print("Randome number:", self.infection)
+        # print("Randome number:", self.infection.mortality_rate)
         if(self.infection is not None):
-            if(random_number < self.infection.mortality_rate):
+            print("Randome number:", self.infection.mortality_rate)
+            num = random.uniform(0, 1)
+            print(num)
+            if(num < self.infection.mortality_rate):
+                print("Dead")
                 self.is_alive = False
                 self.infection = None
                 return False
             else:
-                print("You get to live forever!", self._id)
+                print("You get to live forever!", self._id, num)
                 self.is_vaccinated = True
                 self.infection = None
                 return True
@@ -42,11 +39,7 @@ class Person(object):
         # TODO:  Finish this method. Should return a Boolean
 
 
-''' These are simple tests to ensure that you are instantiating your Person class correctly. '''
-
-
 class MyTestCase(unittest.TestCase):
-
 
     def test_vacc_person_instantiation(self):
         # create some people to test if our init method works as expected
@@ -55,7 +48,6 @@ class MyTestCase(unittest.TestCase):
         assert person.is_alive is True
         assert person.is_vaccinated is True
         assert person.infection is None
-
 
     def test_not_vacc_person_instantiation(self):
         person = Person(2, False)
@@ -82,7 +74,6 @@ class MyTestCase(unittest.TestCase):
         # the values at each attribute
         # assert ...
         pass
-
 
     def test_did_survive_infection(self):
         # TODO: Create a Virus object to give a Person object an infection
