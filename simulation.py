@@ -115,9 +115,10 @@ class Simulation(object):
                 infected += 1
             if(person.is_vaccinated is True):
                 vacc += 1
+            print("Number of infected:", infected)
             print("Num of vacc per person:", person.is_vaccinated)
         print("# of vacc:", vacc + self.initial_infected)
-        if(infected is len(self.population) or self.virus.mortality_rate == 0 and infected is len(self.population) - self.initial_infected or self.vacc_percentage == 1.0 or vacc + self.initial_infected >= self.pop_size):
+        if(infected == len(self.population) or self.virus.mortality_rate == 0 and infected is len(self.population) - self.initial_infected or self.vacc_percentage == 1.0 or vacc + self.initial_infected >= self.pop_size):
             return False
         else:
             return True
@@ -230,7 +231,6 @@ class Simulation(object):
             for zombie in infected_list:
                 if(person._id == zombie):
                     person.infection = self.virus
-                    self.current_infected += 1
         self.newly_infected = []
 
         print(self.total_dead)
