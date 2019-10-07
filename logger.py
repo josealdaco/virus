@@ -20,7 +20,7 @@ class Logger(object):
         file = open(self.file_name, "w")
         file = open(self.file_name, "a")
         try:
-            file.write(f"Population:{virus_name}, Vaccination percentage:{pop_size}, Virus name:{vacc_percentage}, Morality rate:{mortality_rate}, Reproduction percentage:{initial_infected} \n")
+            file.write(f"Virus name:{virus_name}, Population size:{pop_size},VACCINATION %:{vacc_percentage}, Morality rate:{mortality_rate}, INITIALLY INFECTED:{initial_infected} \n")
             file.close()
         except Exception:
             print("Could not append Data")

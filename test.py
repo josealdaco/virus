@@ -1,42 +1,43 @@
 import unittest
+from logger import Logger
+from person import Person
+from simulation import Simulation
+from virus import Virus
 import random
-
-class Person(object):
-    ''' Person objects will populate the simulation. '''
-
-    def __init__(self, _id, is_vaccinated, infection=None):
-
-        self._id = _id  # int
-        self.is_alive = True  # boolean
-        self.is_vaccinated = is_vaccinated  # boolean
-        self.infection = infection  # Virus object or None
-
-    def did_survive_infection(self):
-        ''' Generate a random number and compare to virus's mortality_rate.
-        If random number is smaller, person dies from the disease.
-        If Person survives, they become vaccinated and they have no infection.
-        Return a boolean value indicating whether they survived the infection.
-        '''
-        # print("Randome number:", self.infection.mortality_rate)
-        if(self.infection is not None):
-            print("Randome number:", self.infection.mortality_rate)
-            num = random.uniform(0, 1)
-            print(num)
-            if(num < self.infection.mortality_rate):
-                print("Dead")
-                self.is_alive = False
-                self.infection = None
-                return False
-            else:
-                print("You get to live forever!", self._id, num)
-                self.is_vaccinated = True
-                self.infection = None
-                return True
-        # Only called if infection attribute is not None.
-        # TODO:  Finish this method. Should return a Boolean
 
 
 class MyTestCase(unittest.TestCase):
+
+    def test_virus_instantiation(self):
+        #TODO: Create your own test that models the virus you are working with
+        '''Check to make sure that the virus instantiator is working.'''
+        virus = Virus("HIV", 0.8, 0.3)
+        assert virus.name == "HIV"
+        assert virus.repro_rate == 0.8
+        assert virus.mortality_rate == 0.3
+
+    def test_logger_instantiation(self):
+        """Checks if data is corrently being written in file answer.txt """
+        name = "Tongue"
+        pop = 10
+        vacc = 0.4
+        mortality = 0.7
+        initial_infected = 1
+        log = Logger("answers.txt")
+        log.write_metadata(name, pop, vacc, mortality, initial_infected)
+        file = open("answers.txt", 'r')
+        value = file.readline()
+        assert value.strip() == f"Virus name:{name}, Population size:{pop},VACCINATION %:{vacc}, Morality rate:{mortality}, INITIALLY INFECTED:{initial_infected}"  # Strip removes /n
+
+    def test_simulation(self):
+        pop_size = 100
+        vacc_percentage = 0.5
+        initial_infected = 1
+        virus = Virus("Dysentery", 0.5, 0.5)
+        sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+        sim.run()
+        assert sim.total_dead <= pop_size * vacc_percentage
+        pass
 
     def test_vacc_person_instantiation(self):
         # create some people to test if our init method works as expected
@@ -66,7 +67,7 @@ class MyTestCase(unittest.TestCase):
         person_2 = Person(23, False, virus)
         # TODO: complete your own assert statements that test
         assert person.infection is not None
-        assert person.did_survive_infection() is True
+        assert person.did_survive_infection() is False
         print(person_2.did_survive_infection())
         # the values at each attribute
         # assert ...
@@ -83,16 +84,20 @@ class MyTestCase(unittest.TestCase):
         # Check if the Person survived or not
         if survived:
             assert person.is_alive is True
+            assert person.infection is None
+            assert person.is_vaccinated is True
             # TODO: Write your own assert statements that test
             # the values of each attribute for a Person who survived
             # assert ...
         else:
             assert person.is_alive is False
+            assert person.infection is None
+            assert person.is_vaccinated is False
             # TODO: Write your own assert statements that test
             # the values of each attribute for a Person who did not survive
             # assert ...
             pass
 
 
-if(__name__ == '__main__'):
+if __name__ == '__main__':
     unittest.main()
