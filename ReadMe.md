@@ -78,6 +78,8 @@ Collaboration is encouraged, but be sure that you typed in all the code yourself
 
 The template code was written in a cottage on the coast of Ireland with spotty power during the strongest hurricane Ireland has seen in 61 years, so... **there are probably some bugs in the template code**. If you think something doesn't make sense, double check with your classmates and/or the instructor.  If you feel the need to modify the template code to make it work another way, that's totally fine! The template code is there to help you, but it isn't a requirement that you use all of it.
 
+*The answer sheet is in results.txt, logger is answers.txt*
+Read above
 **WRITE TESTS!**
 
 This is a big project.  There's no way that all the code you write is going to work the first time.  Also, see the paragraph above about all of this being coded by a man on a mountain during a 61-year storm while fighting off mountain lions with only a soup-ladle to defend himself.  Starting by thinking about your test cases and aiming for good test coverage is a great way to vaccinate yourself against any pre-existing bugs in the template. Not sure how to write tests? Look at the tests for the Super Hero project and utilize some strategies from those tests.

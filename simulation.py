@@ -42,6 +42,7 @@ class Simulation(object):
         self.total_infected = 0  # Int
         self.current_infected = 0  # Int
         self.total_dead = 0  # Int
+        self.saved = 0
         self.file_name = "{}_simulation_pop_{}_vp_{}_morality{}_infected_{}.txt".format(
             virus.name, pop_size, vacc_percentage, virus.mortality_rate, initial_infected)
         try:
@@ -115,9 +116,9 @@ class Simulation(object):
                 infected += 1
             if(person.is_vaccinated is True):
                 vacc += 1
-            print("Number of infected:", infected)
-            print("Num of vacc per person:", person.is_vaccinated)
-        print("# of vacc:", vacc + self.initial_infected)
+            #print("Num of vacc per person:", person.is_vaccinated)
+        print("percent infected:", self.pop_size // infected)
+        print("# of infected:", infected)
         if(infected == len(self.population) or self.virus.mortality_rate == 0 and infected is len(self.population) - self.initial_infected or self.vacc_percentage == 1.0 or vacc + self.initial_infected >= self.pop_size):
             return False
         else:
@@ -136,6 +137,7 @@ class Simulation(object):
         # TODO: Keep track of the number of time steps that have passed.
         # HINT: You may want to call the logger's log_time_step() method at the end of each time step.
         # TODO: Set this variable using a helper
+
         time_step_counter = 0
         while True:
             self.time_step()
@@ -146,8 +148,11 @@ class Simulation(object):
             time_step_counter += 1
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
+        for person in self.population:  # prints amount of dead
+            if(person.is_alive is False):
+                self.total_dead += 1
 
-        print(f'The simulation has ended after {time_step_counter} turns., this is the total Dead:{self.total_dead}')
+        print(f'The simulation has ended after {time_step_counter} turns., this is the total Dead:{self.total_dead}, people saved:{self.saved}')
         pass
 
     def time_step(self):
@@ -161,8 +166,6 @@ class Simulation(object):
             3. Otherwise call simulation.interaction(person, random_person) and
                 increment interaction counter by 1.
             '''
-        for x in self.population:
-            print("Person:", x._id, x.infection)
         for person in self.population:
             if(person.infection is not None and person.is_alive is True):
                  #If person is infected
@@ -172,14 +175,11 @@ class Simulation(object):
                     if(random_person.is_alive is True and person.is_alive is True):
                         self.interaction(person, random_person)
                         self.logger.log_interaction(person, random_person)
-                        random_person.did_survive_infection()
+                        infect = random_person.did_survive_infection()
+                        if(infect is True):
+                            self.saved += 1
                         self.logger.log_infection_survival(random_person, random_person.is_alive)
-                        if(random_person.is_alive is False):
-                            self.total_dead += 1
                 person.did_survive_infection()
-                        #else:
-                        #    random_num = random.randint(0, len(self.population)-1)
-                        #    random_person = self.population[random_num]
 
 
         # TODO: Finish this method.
@@ -194,8 +194,8 @@ class Simulation(object):
         '''
         # Assert statements are included to make sure that only living people are passed
         # in as params
-        assert person.is_alive == True
-        assert random_person.is_alive == True
+        assert person.is_alive is True
+        assert random_person.is_alive is True
 
         # TODO: Finish this method.
         #  The possible cases you'll need to cover are listed below:
