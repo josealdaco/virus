@@ -227,9 +227,9 @@ class Simulation(object):
         and update each Person object with the disease. '''
         #filter the zombie list
         infected_list = list(set(self.newly_infected))
-        for person in self.population:
-            for zombie in infected_list:
-                if(person._id == zombie):
+        for zombie in infected_list:
+            for person in self.population:
+                if(zombie == person._id):
                     person.infection = self.virus
         self.newly_infected = []
 
