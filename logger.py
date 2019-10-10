@@ -32,13 +32,20 @@ class Logger(object):
         # event logged ends up on a separate line!
         pass
 
-    def log_interaction(self, person, random_person, random_person_sick=None,
+    def log_interaction(self, person, random_person, sick,
                         random_person_vacc=None, did_infect=None):
 
         file = open(self.file_name, "a")
         try:
-            file.write(str(f"Person:{person._id}, Random Person ID:{random_person._id}\n"))
-            file.close()
+            if sick == 1:
+                file.write(str(f"Person:{person._id}, Does not infect Random Person ID:{random_person._id} Because he is vaccinated \n"))
+                file.close()
+            elif sick == 2:
+                file.write(str(f"Person:{person._id}, Does not Infect Random Person ID:{random_person._id} Because He is already infected\n"))
+                file.close()
+            elif sick == 3:
+                file.write(str(f"Person:{person._id}, Infects Random Person ID:{random_person._id}\n"))
+
         except Exception:
             print("Could not append data to Text file")
         # TODO: Finish this method. This line of metadata should be tab-delimited
